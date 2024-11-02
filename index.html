@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+    <div id="title">KrokodiL</div>
+
+    <div id="codeEditor">
+        <div id="editorWrapper">
+            <div id="lineNumber">
+                <div class="lineNumber">1</div> <!--example-->
+                <div class="lineNumber">2</div>
+            </div>
+
+            <div id="textEditor">
+                <div id="editorCursor"></div> <!--don't remove this ever-->
+
+                <div class="textEditorLine">abcdefghijklmnopq</div>
+                <div class="textEditorLine">abcdefghijklmnopqrstuwxyz</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings">
+        <h2>Relative Lines: </h2><input name="relativeLines" id="relativeLines" type="checkbox" onclick="changeSetting(this.id)"><br>
+        <h2>FullScreen Code Editor (F11): </h2><input name="fullscreen" id="fullscreen" type="checkbox" onclick="changeSetting(this.id)"><br>
+        <h2>Smooth Cursor Movement: </h2><input name="smoothCaret" id="smoothCaret" type="checkbox" onclick="changeSetting(this.id)"><br>
+
+        <br><br><br><br>
+
+    </div>
+
+    <!-- Scripts go here -->
+    <script src="js/settings.js"></script>
+    <script src="js/caret.js"></script>
+    <script src="js/write.js"></script>
+</body>
+</html>
