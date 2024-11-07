@@ -1,8 +1,14 @@
 let lineAmount = 2
-let cursorX = 0
-let cursorY = 1
+//let cursorX = 0
+//let cursorY = 1
 let currentLine = 1
 let lastAction = null
+
+function setCaretPos(x, y){
+	//Sets caret position
+	document.getElementById("editorCursor").style.marginLeft = x + "px"
+	document.getElementById("editorCursor").style.marginTop = y + "px"
+}
 
 function relativeLine(){
 	/*for(var i = currentLine; i < lineAmount; i++){
@@ -26,7 +32,9 @@ function removeLine(){
 	}
 }
 
-function createNewLine(){
+function createNewLine(x, y){
+	var cursorX = x
+	var cursorY = y
 	if(currentLine == lineAmount){
 		lineAmount++
 		currentLine++
@@ -38,7 +46,7 @@ function createNewLine(){
 			newLine.innerHTML = lineAmount
 		}
 		else{
-			//relativeLine()
+			relativeLine()
 		}
 		newText.innerText = ":"
 		document.getElementById("lineNumber").appendChild(newLine)
@@ -67,60 +75,13 @@ function createNewLine(){
 		document.getElementById("textEditor").appendChild(newText)
 		document.getElementById("textEditor").insertBefore(newText, selectedLine)
 	}
+	setCaretPos(cursorX, cursorY)
 }
 
-document.addEventListener('keydown', function(event) {
-	//Enter
-	if(event.keyCode == 13){
-		//Creates new line
-		createNewLine()
-	}
-	
-	//Left Arrow Key
-	if(event.keyCode == 37 && cursorX > 0){
-		cursorX-= 9 //cursorX
-	}
+document.addEventListener('keydown', function(event){
+	var cursorX = parseInt(window.getComputedStyle(document.getElementById("editorCursor")).marginLeft)
+	var cursorY = parseInt(window.getComputedStyle(document.getElementById("editorCursor")).marginTop)
 
-	//Right Arrow Key
-	if(event.keyCode == 39 && cursorX < document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9){
-		cursorX+= 9 //cursorX
-	}
-	
-	//Up Arrow Key
-	if(event.keyCode == 38 && currentLine > 1){
-		currentLine-= 1
-		cursorY-= 31 //cursorY
-		try{
-			if(cursorX > document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9){
-				cursorX = document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9
-			}
-		}catch(error){
-			console.log("Caught Error: "+error)
-			cursorX = 0
-		}
-		if(relativeLines.value == true){
-			relativeLine()
-		}
-	}
-	
-	//Down Arrow Key
-	if(event.keyCode == 40 && currentLine < lineAmount){
-		currentLine+= 1
-		cursorY+= 31 //cursorY
-		try{ //gets current line, compares it to the before line
-			if(cursorX > document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9){
-				cursorX = document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9
-			}
-		}catch(error){ //if new line has no text, set cursor left pos to 0
-			console.log("Caught Error: "+error)
-			cursorX = 0 
-		}
-		if(relativeLines.value == true){
-			relativeLine()
-		}
-	}
-
-	//Backspace Key
 	//TODO MAKE REMOVE
 	//BACKSPACE and DEL BUTTON
 	//IMO YOU CAN GET THE CURRENT LINE
@@ -137,42 +98,93 @@ document.addEventListener('keydown', function(event) {
 	//ALSO YOU MIGHT NEED TO DO YOUR OWN KEYHOLD SYSTEM
 	//BUT UR PROBABLY TOO LAZY FOR THAT AS EVEN CREATORS OF THE COMPUTERS DIDN'T IMPLEMENT IT
 	//TODO ALSO DO LAST ACTION
+	//TODO ALSO DO IT SO THAT IF YOU PRESS ENTER IN THE MIDDLE (OR ANYWHERE THAT ISN'T THE CORNER) OF THE LINE, BREAK THE LINE 
+	//                                                                                          BUT DONT REMOVE IT OR ANYTHING
+	//                                                                                                 JUST BREAK IT TO KITKAT
 	
+	//char before cursor
 	var charToRemoveBackspace = (document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText).charAt((cursorX/9) - 1)
 	var charToRemoveDel = (document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText).charAt((cursorX/9))
-	
-	//Backspace
-	if(event.keyCode == 8){
-		console.log(charToRemoveBackspace)
-		if(charToRemoveBackspace == ""){
-			removeLine()
-			if(cursorY > 1)	(cursorY-= 31,  currentLine--)
-		}
-	}
+	//char after cursor
 
-	//Del
-	if(event.keyCode == 46){
-		console.log(charToRemoveDel)
-		if(charToRemoveDel == "" && currentLine != lineAmount){
-			currentLine++
-			removeLine()
-			currentLine--
-		}
+	switch(event.keyCode){
+		case 13: //Enter
+			//Creates new Line
+			createNewLine(cursorX, cursorY)
+			break
+		case 37: //Left Arrow Key
+			if(cursorX > 0) cursorX-=9
+			setCaretPos(cursorX, cursorY)
+			break
+		case 39: //Right Arrow Key
+			if(cursorX < document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9) cursorX+=9
+			setCaretPos(cursorX, cursorY)
+			break
+		case 38: //Up Arrow Key
+			if(currentLine > 1){
+				currentLine-= 1
+				cursorY-= 31 //cursorY
+				try{
+					if(cursorX > document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9){
+						cursorX = document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9
+					}
+				}catch(error){
+					console.log("Caught Error: "+error)
+					cursorX = 0
+				}
+				if(relativeLines.value == true){
+					relativeLine()
+				}
+				setCaretPos(cursorX, cursorY)
+			}
+			break
+		case 40: //Down Arrow Key
+			if(currentLine < lineAmount){
+				currentLine+= 1
+				cursorY+= 31 //cursorY
+				try{ //gets current line, compares it to the before line
+					if(cursorX > document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9){
+						cursorX = document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9
+					}
+				}catch(error){ //if new line has no text, set cursor left pos to 0
+					console.log("Caught Error: "+error)
+					cursorX = 0 
+				}
+				if(relativeLines.value == true){
+					relativeLine()
+				}
+				setCaretPos(cursorX, cursorY)
+			}
+			break
+		case 8: //Backspace
+			console.log(charToRemoveBackspace)
+			if(charToRemoveBackspace == ""){
+				removeLine()
+				if(cursorY > 1)	(cursorY-= 31,  currentLine--) 
+				setCaretPos(cursorX, cursorY)
+			}
+			break
+		case 46: //Del
+			console.log(charToRemoveDel)
+			if(charToRemoveDel == "" && currentLine != lineAmount){
+				currentLine++
+				document.querySelectorAll(".textEditorLine")[currentLine - 2].innerText = document.querySelectorAll(".textEditorLine")[currentLine - 2].innerText + document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText
+				removeLine()
+				currentLine--
+			}
+			break
+		case 122: //F11
+			if(fullscreen.value == true) document.getElementById("codeEditor").requestFullscreen()
 	}
 
 	//CtrlShiftK
 	if(event.ctrlKey && event.shiftKey && event.keyCode == 75){
 		removeLine()
 		cursorX = 0
-		if(cursorY > 1)	(cursorY-= 31,  currentLine--, cursorX = document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9)
+		if(cursorY > 1) (cursorY-= 31,  currentLine--, cursorX = document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText.length * 9)
+		setCaretPos(cursorX, cursorY)
 	}
 
-	//F11
-	if(event.keyCode == 122){
-		if(fullscreen.value == true) document.getElementById("codeEditor").requestFullscreen()
-	}
-
-	//Sets caret position
-	document.getElementById("editorCursor").style.marginLeft = cursorX + "px"
-	document.getElementById("editorCursor").style.marginTop = cursorY + "px"
+	cursorX = null
+	cursorY = null
 }, false);
