@@ -30,7 +30,7 @@ body{
 	overflow-y: scroll;
 	margin-left: auto;
 	margin-right: auto;
-	transform: scale(1.025) perspective(400px) rotateX(8deg);
+	transform: scale(1.07) perspective(400px) rotateX(16deg);
 	-ms-overflow-style: none;  /* IE and Edge */
   	scrollbar-width: none;
 }
