@@ -1,11 +1,16 @@
 @font-face{
 	font-family: "iosevka";
-	src: url("fonts/Iosevka-Medium.ttc");
+	src: url("fonts/iosevka-regular.ttf");
 }
 
 @font-face{
-	font-family: "baukasten";
-	src: url("fonts/Baukasten One Regular.otf");
+	font-family: "jetbrains mono";
+	src: url("fonts/JetBrainsMono-Thin.ttf");
+}
+
+@font-face{
+	font-family: "jetbrains mono bolder";
+	src: url("fonts/JetBrainsMono-Light.ttf");
 }
 
 @keyframes cursorBlink{
@@ -16,24 +21,29 @@
 }
 
 body{
+	background-image: url("bg.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
 	background-color: black;
 	overflow: hidden;
 }
 
 #settings{
 	color: white;
-	font-family: "iosevka";
+	font-family: "jetbrains mono bolder";
 	position: absolute;
-	border-radius: 10px;
-	top: 88px;
+	top: 91px;
 	left: 16px;
 	width: 350px;
+	box-shadow: 0 0 20px black;
+	overflow: hidden;
+	border-radius: 10px;
 }
 
 #optionsContainer{
 	padding-top: 15px;
 	overflow-y: scroll;
-	max-height: 350px;
+	max-height: 335px;
 	display: block;
 	background-color: rgb(20, 20, 20);
 	align-content: center;
@@ -116,7 +126,7 @@ body{
 
 #title{
 	color: white;
-	font-family: "iosevka";
+	font-family: "jetbrains mono";
 	text-align: center;
 	font-size: 4rem;
 	margin-bottom: -10px;
@@ -138,6 +148,9 @@ body{
 	margin-top: 20px;
 	overflow: hidden;
 	background-color: rgb(20, 20, 20);
+	border-radius: 10px;
+	box-shadow: 0 0 20px black;
+	font-weight: 550;
 }
 
 .codeEditorAnim{
@@ -175,9 +188,10 @@ body{
 
 #editorCursor{
 	width: 8px;
-	height: 18px;
+	height: 16px;
 	background-color: white;
 	position: absolute;
+	top: 156px;
 	margin-top: 0px;
 	margin-left: 0px;
 }
