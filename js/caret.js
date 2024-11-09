@@ -53,9 +53,11 @@ function createNewLine(x, y, z, w){
 		cursorY+= 31
 		cursorX = 9
 	}
-	else{
+	else if(z != w && cursorX == document.querySelectorAll(".textEditorLine")[z].innerText.length * 9){
 		w++
+		z++
 		cursorX = 9
+		cursorY += 31
 		var selectedLine = document.querySelectorAll(".textEditorLine")[z]
 		var newLine = document.createElement("div")
 		var newText = document.createElement("div")
@@ -73,6 +75,9 @@ function createNewLine(x, y, z, w){
 		}
 		document.getElementById("textEditor").appendChild(newText)
 		document.getElementById("textEditor").insertBefore(newText, selectedLine)
+	}
+	else if(z != w && cursorX < document.querySelectorAll(".textEditorLine")[z].innerText.length * 9){
+		//TODO DO THIS
 	}
 	setCaretPos(cursorX, cursorY)
 	cursorX = undefined
@@ -106,7 +111,8 @@ document.addEventListener('keydown', function(event){
 	//                                                                                              JUST GET EVERYTHING IN THE 
 	//															  								       RIGHT OF THE CURSOR AND 
 	//																					  CREATE NEW LINE, THEN PASTE IT THERE
-	
+	//ALSO EDITOR WRAPPER HAS THE HEIGHT OF 361
+
 	//char before cursor
 	var charToRemoveBackspace = (document.querySelectorAll(".textEditorLine")[currentLine].innerText).charAt((cursorX/9) - 1)
 	var charToRemoveDel = (document.querySelectorAll(".textEditorLine")[currentLine].innerText).charAt((cursorX/9))
