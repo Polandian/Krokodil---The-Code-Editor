@@ -34,26 +34,7 @@ function removeLine(x, y){
 function createNewLine(x, y, z, w){
 	var cursorX = x
 	var cursorY = y
-	if(z == w){
-		w++ //lineNumber
-		z++ //currentLine
-		var newLine = document.createElement("div")
-		var newText = document.createElement("div")
-		newLine.classList.add("lineNumber")
-		newText.classList.add("textEditorLine")
-		if(relativeLines.value == false){
-			newLine.innerHTML = w + 1
-		}
-		else{
-			relativeLine()
-		}
-		newText.innerText = ":"
-		document.getElementById("lineNumber").appendChild(newLine)
-		document.getElementById("textEditor").appendChild(newText)
-		cursorY+= 31
-		cursorX = 9
-	}
-	else if(z != w && cursorX == document.querySelectorAll(".textEditorLine")[z].innerText.length * 9){
+	if(cursorX == document.querySelectorAll(".textEditorLine")[z].innerText.length * 9){
 		w++
 		z++
 		cursorX = 9
@@ -76,7 +57,7 @@ function createNewLine(x, y, z, w){
 		document.getElementById("textEditor").appendChild(newText)
 		document.getElementById("textEditor").insertBefore(newText, selectedLine)
 	}
-	else if(z != w && cursorX < document.querySelectorAll(".textEditorLine")[z].innerText.length * 9){
+	else if(cursorX < document.querySelectorAll(".textEditorLine")[z].innerText.length * 9){
 		//TODO DO THIS
 	}
 	setCaretPos(cursorX, cursorY)
