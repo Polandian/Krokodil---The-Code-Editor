@@ -32,13 +32,12 @@ function relativeLine(x, y){
 
 function removeLine(x, y){
 	document.querySelectorAll(".textEditorLine")[x].remove() //x=currentLine
-	document.querySelectorAll(".lineNumber")[x].remove()     //y=lineAmount
+    //y=lineAmount
 	y--
 	if(relativeLines.value == false){
-		for(var i = 1; i < y + 2; i++){
-				document.querySelectorAll(".lineNumber")[i - 1].innerText = i
-			}
-	}else{ 
+		document.getElementById("lineNumber").lastChild.remove()
+	}
+	else{ 
 		//##########################
 		//#  VERY IMPORTANT        #
 		//#IF YOU ARE GOING TO USE #
@@ -61,16 +60,14 @@ function createNewLine(x, y, z, w){
 		cursorX = 9
 		cursorY += 31
 		var selectedLine = document.querySelectorAll(".textEditorLine")[z]
-		var newLine = document.createElement("div")
 		var newText = document.createElement("div")
-		newLine.classList.add("lineNumber")
 		newText.classList.add("textEditorLine")
 		newText.innerText = ":"
-		document.getElementById("lineNumber").appendChild(newLine)
 		if(relativeLines.value == false){
-			for(var i = 1; i < w + 2; i++){
-				document.querySelectorAll(".lineNumber")[i - 1].innerText = i
-			}
+			var lastLine = document.createElement("div")
+			lastLine.classList.add("lineNumber")
+			lastLine.innerText = w + 1
+			document.getElementById("lineNumber").appendChild(lastLine)
 		}
 		else{
 			relativeLine(z, w)
@@ -85,19 +82,17 @@ function createNewLine(x, y, z, w){
 		w++
 		cursorY += 31
 		var selectedLine = document.querySelectorAll(".textEditorLine")[z]
-		var newLine = document.createElement("div")
 		var newText = document.createElement("div")
-		newLine.classList.add("lineNumber")
 		newText.classList.add("textEditorLine")
 		newText.innerText = ":"
-		document.getElementById("lineNumber").appendChild(newLine)
 		document.getElementById("textEditor").appendChild(newText)
 		document.getElementById("textEditor").insertBefore(newText, selectedLine)
 		z++
 		if(relativeLines.value == false){
-			for(var i = 1; i < w + 2; i++){
-				document.querySelectorAll(".lineNumber")[i - 1].innerText = i
-			}
+			var lastLine = document.createElement("div")
+			lastLine.classList.add("lineNumber")
+			lastLine.innerText = w + 1
+			document.getElementById("lineNumber").appendChild(lastLine)
 		}
 		else{
 			relativeLine(z, w)
