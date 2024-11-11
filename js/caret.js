@@ -9,13 +9,25 @@ function setCaretPos(x, y){ //x = cursorX
 	y = undefined
 }
 
-function relativeLine(){
-	/*for(var i = currentLine; i < lineAmount; i++){
-		document.querySelectorAll(".lineNumber")[i - 1].innerText = i
+function relativeLine(x, y){
+	//x = currentLine
+	//y = lineAmount
+	//text inside that line is 1 more than our current line variable
+	document.querySelectorAll(".lineNumber")[x].innerText = x + 1
+	
+	console.log(document.querySelectorAll(".lineNumber")[x])
+
+	var j = 0
+	var k = 0
+	for(var i = x + 1; i < y + 1; i++){
+		j++
+		document.querySelectorAll(".lineNumber")[i].innerText = j 
 	}
-	for(var i = currentLine; i > 0; i--){
-		document.querySelectorAll(".lineNumber")[i - 1].innerText = i
-	}*/
+
+	for(var l = x - 1; l > -1; l--){
+		k++
+		document.querySelectorAll(".lineNumber")[l].innerText = k
+	}
 }
 
 function removeLine(x, y){
@@ -26,8 +38,17 @@ function removeLine(x, y){
 		for(var i = 1; i < y + 2; i++){
 				document.querySelectorAll(".lineNumber")[i - 1].innerText = i
 			}
-	}else{
-		relativeLine()
+	}else{ 
+		//##########################
+		//#  VERY IMPORTANT        #
+		//#IF YOU ARE GOING TO USE #
+		//#THIS FUNCTION LATER ON  #
+		//#MAKE SURE YOU USE IT    #
+		//#BEFORE YOU LOWER THE    #
+		//#CURRENTLINE VALUE       #
+		//#BECAUSE ITS LOWERED HERE#
+		//##########################
+		relativeLine(x - 1, y)
 	}
 }
 
@@ -52,13 +73,35 @@ function createNewLine(x, y, z, w){
 			}
 		}
 		else{
-			relativeLine()
+			relativeLine(z, w)
 		}
 		document.getElementById("textEditor").appendChild(newText)
 		document.getElementById("textEditor").insertBefore(newText, selectedLine)
 	}
-	else if(cursorX < document.querySelectorAll(".textEditorLine")[z].innerText.length * 9){
+	else if(cursorX < document.querySelectorAll(".textEditorLine")[z].innerText.length * 9 && cursorX > 0){
 		//TODO DO THIS
+	}
+	else if(cursorX == 0){
+		w++
+		cursorY += 31
+		var selectedLine = document.querySelectorAll(".textEditorLine")[z]
+		var newLine = document.createElement("div")
+		var newText = document.createElement("div")
+		newLine.classList.add("lineNumber")
+		newText.classList.add("textEditorLine")
+		newText.innerText = ":"
+		document.getElementById("lineNumber").appendChild(newLine)
+		document.getElementById("textEditor").appendChild(newText)
+		document.getElementById("textEditor").insertBefore(newText, selectedLine)
+		z++
+		if(relativeLines.value == false){
+			for(var i = 1; i < w + 2; i++){
+				document.querySelectorAll(".lineNumber")[i - 1].innerText = i
+			}
+		}
+		else{
+			relativeLine(z, w)
+		}
 	}
 	setCaretPos(cursorX, cursorY)
 	cursorX = undefined
@@ -81,9 +124,6 @@ document.addEventListener('keydown', function(event){
 
 	//TODO DO OWN SCROLLBAR FOR OVERFLOWS
 	//TODO MAKE SELECT ENTIRE LINE WITH CTRL A + CHANGE BACKGROUND OF THAT LINE
-	//I WISH WE DIDN'T HAVE EXAMS BRO IT TAKES SO LONG TO FINISH
-	//TODO OH AND ALSO FIX relativeLine()
-	//ITS GETTING CALLED YOU JUST NEED TO MAKE IT WORK
 	//ALSO YOU MIGHT NEED TO DO YOUR OWN KEYHOLD SYSTEM
 	//BUT UR PROBABLY TOO LAZY FOR THAT AS EVEN CREATORS OF THE COMPUTERS DIDN'T IMPLEMENT IT
 	//TODO ALSO DO LAST ACTION
@@ -93,6 +133,8 @@ document.addEventListener('keydown', function(event){
 	//															  								       RIGHT OF THE CURSOR AND 
 	//																					  CREATE NEW LINE, THEN PASTE IT THERE
 	//ALSO EDITOR WRAPPER HAS THE HEIGHT OF 361
+	//BTW JAVASCRIPT DOESN'T SEE THE SPANS AS OTHER ELEMENTS, SO ITS GONNA BE PRETTY EZZ!!! IM SO HAPPY OMG
+	//JUST NOTICED IT WONT BE THAT EASY
 
 	//char before cursor
 	var charToRemoveBackspace = (document.querySelectorAll(".textEditorLine")[currentLine].innerText).charAt((cursorX/9) - 1)
@@ -106,16 +148,29 @@ document.addEventListener('keydown', function(event){
 			break
 		case 37: //Left Arrow Key
 			if(cursorX > 0) cursorX-=9
+			else if(cursorX == 0 && currentLine > 0){
+				currentLine--
+				cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
+				cursorY -= 31
+			}
 			setCaretPos(cursorX, cursorY)
 			break
 		case 39: //Right Arrow Key
 			if(cursorX < document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9) cursorX+=9
+			else if(cursorX == document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9 && currentLine != lineAmount){
+				currentLine++
+				cursorX = 0
+				cursorY += 31
+			}
 			setCaretPos(cursorX, cursorY)
 			break
 		case 38: //Up Arrow Key
 			if(currentLine > 0){
 				currentLine-= 1
 				cursorY-= 31 //cursorY
+				if(relativeLines.value == true){
+					relativeLine(currentLine, lineAmount)
+				}
 				try{
 					if(cursorX > document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9){
 						cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
@@ -124,9 +179,6 @@ document.addEventListener('keydown', function(event){
 					console.log("Caught Error: "+error)
 					cursorX = 0
 				}
-				if(relativeLines.value == true){
-					relativeLine()
-				}
 				setCaretPos(cursorX, cursorY)
 			}
 			break
@@ -134,6 +186,9 @@ document.addEventListener('keydown', function(event){
 			if(currentLine < lineAmount){
 				currentLine+= 1
 				cursorY+= 31 //cursorY
+				if(relativeLines.value == true){
+					relativeLine(currentLine, lineAmount)
+				}
 				try{ //gets current line, compares it to the before line
 					if(cursorX > document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9){
 						cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
@@ -142,14 +197,10 @@ document.addEventListener('keydown', function(event){
 					console.log("Caught Error: "+error)
 					cursorX = 0 
 				}
-				if(relativeLines.value == true){
-					relativeLine()
-				}
 				setCaretPos(cursorX, cursorY)
 			}
 			break
 		case 8: //Backspace
-			console.log(charToRemoveBackspace)
 			if(charToRemoveBackspace == ""){
 				removeLine(currentLine, lineAmount)
 				if(cursorY > 1)	(cursorY-= 31,  currentLine--) 
@@ -157,7 +208,6 @@ document.addEventListener('keydown', function(event){
 			}
 			break
 		case 46: //Del
-			console.log(charToRemoveDel)
 			if(charToRemoveDel == "" && currentLine != lineAmount){
 				currentLine++
 				document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText = document.querySelectorAll(".textEditorLine")[currentLine - 1].innerText + document.querySelectorAll(".textEditorLine")[currentLine].innerText
