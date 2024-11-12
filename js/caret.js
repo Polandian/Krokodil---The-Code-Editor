@@ -14,8 +14,6 @@ function relativeLine(x, y){
 	//y = lineAmount
 	//text inside that line is 1 more than our current line variable
 	document.querySelectorAll(".lineNumber")[x].innerText = x + 1
-	
-	console.log(document.querySelectorAll(".lineNumber")[x])
 
 	var j = 0
 	var k = 0
@@ -32,12 +30,10 @@ function relativeLine(x, y){
 
 function removeLine(x, y){
 	document.querySelectorAll(".textEditorLine")[x].remove() //x=currentLine
-    //y=lineAmount
+    														 //y=lineAmount
 	y--
-	if(relativeLines.value == false){
-		document.getElementById("lineNumber").lastChild.remove()
-	}
-	else{ 
+	document.querySelectorAll(".lineNumber")[y + 1].remove() //removes last line number
+	if(relativeLines.value == true){ 
 		//##########################
 		//#  VERY IMPORTANT        #
 		//#IF YOU ARE GOING TO USE #
@@ -63,17 +59,17 @@ function createNewLine(x, y, z, w){
 		var newText = document.createElement("div")
 		newText.classList.add("textEditorLine")
 		newText.innerText = ":"
+		document.getElementById("textEditor").appendChild(newText)
+		document.getElementById("textEditor").insertBefore(newText, selectedLine)
+		var lastLine = document.createElement("div")
+		lastLine.classList.add("lineNumber")
+		document.getElementById("lineNumber").appendChild(lastLine)
 		if(relativeLines.value == false){
-			var lastLine = document.createElement("div")
-			lastLine.classList.add("lineNumber")
 			lastLine.innerText = w + 1
-			document.getElementById("lineNumber").appendChild(lastLine)
 		}
 		else{
 			relativeLine(z, w)
 		}
-		document.getElementById("textEditor").appendChild(newText)
-		document.getElementById("textEditor").insertBefore(newText, selectedLine)
 	}
 	else if(cursorX < document.querySelectorAll(".textEditorLine")[z].innerText.length * 9 && cursorX > 0){
 		//TODO DO THIS
@@ -88,11 +84,11 @@ function createNewLine(x, y, z, w){
 		document.getElementById("textEditor").appendChild(newText)
 		document.getElementById("textEditor").insertBefore(newText, selectedLine)
 		z++
+		var lastLine = document.createElement("div")
+		lastLine.classList.add("lineNumber")
+		document.getElementById("lineNumber").appendChild(lastLine)
 		if(relativeLines.value == false){
-			var lastLine = document.createElement("div")
-			lastLine.classList.add("lineNumber")
 			lastLine.innerText = w + 1
-			document.getElementById("lineNumber").appendChild(lastLine)
 		}
 		else{
 			relativeLine(z, w)
@@ -130,6 +126,8 @@ document.addEventListener('keydown', function(event){
 	//ALSO EDITOR WRAPPER HAS THE HEIGHT OF 361
 	//BTW JAVASCRIPT DOESN'T SEE THE SPANS AS OTHER ELEMENTS, SO ITS GONNA BE PRETTY EZZ!!! IM SO HAPPY OMG
 	//JUST NOTICED IT WONT BE THAT EASY
+	//BTW OVERFLOW PROBLEM IS FIXED, NOW YOU CANT SEE CURSOR GOING UNDER THE EDITOR
+	//YOU STILL NEED TO MAKE THE SCROLLBAR THO
 
 	//char before cursor
 	var charToRemoveBackspace = (document.querySelectorAll(".textEditorLine")[currentLine].innerText).charAt((cursorX/9) - 1)
@@ -147,6 +145,7 @@ document.addEventListener('keydown', function(event){
 				currentLine--
 				cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
 				cursorY -= 31
+				relativeLine(currentLine, lineAmount)
 			}
 			setCaretPos(cursorX, cursorY)
 			break
@@ -156,6 +155,7 @@ document.addEventListener('keydown', function(event){
 				currentLine++
 				cursorX = 0
 				cursorY += 31
+				relativeLine(currentLine, lineAmount)
 			}
 			setCaretPos(cursorX, cursorY)
 			break
