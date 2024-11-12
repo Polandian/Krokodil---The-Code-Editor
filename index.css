@@ -32,12 +32,13 @@ body{
 	color: white;
 	font-family: "jetbrains mono bolder";
 	position: absolute;
-	top: 91px;
+	top: 92px;
 	left: 16px;
 	width: 350px;
 	box-shadow: 0 0 20px black;
 	overflow: hidden;
 	border-radius: 10px;
+
 }
 
 #optionsContainer{
@@ -67,7 +68,10 @@ body{
 .tabMenu{
 	background-color: rgb(35, 35, 35);
 	height: 50px;
-	position: relative;
+	position: sticky;
+	top: 0;
+	box-shadow: 0 0 5px black;
+	user-select: none;
 }
 
 .exitCircle, .maxCircle, .smallCircle{
@@ -102,7 +106,7 @@ body{
 	font-weight: 100;
 	font-size: 20px;
 	position: absolute;
-
+	z-index: 5;
 	left:50%;
 	transform: translate(-50%)
 }
@@ -133,6 +137,7 @@ body{
 	margin-top: -10px;
 	font-weight: 50;
 	transform: perspective(400px) rotateX(10deg);
+	user-select: none;
 }
 
 @keyframes editorAnim{
@@ -146,12 +151,25 @@ body{
 	height: 400px;
 	margin: auto;
 	margin-top: 20px;
-	overflow: hidden;
-	background-color: rgb(20, 20, 20);
+	background: rgb(20, 20, 20);
+	overflow-y: auto;
+	overflow-x: auto;
 	border-radius: 10px;
 	box-shadow: 0 0 20px black;
 	font-weight: 550;
+	-webkit-user-select: none; /* Safari */
+  	-ms-user-select: none; /* IE 10 and IE 11 */
+  	user-select: none;
+  	backdrop-filter: blur(8px);
+  	-webkit-backdrop-filter: blur(8px);
+  	-ms-overflow-style: none;  /* IE and Edge */
+  	scrollbar-width: none;
 }
+
+#codeEditor::-webkit-scrollbar {
+  display: none;
+}
+
 
 .codeEditorAnim{
 	animation: editorAnim 2s infinite ease-in-out;
@@ -188,13 +206,18 @@ body{
 
 #editorCursor{
 	width: 8px;
-	height: 16px;
+	height: 14px;
 	background-color: white;
 	position: absolute;
-	top: 156px;
+	padding-bottom: 5.5px;
 	margin-top: 0px;
 	margin-left: 0px;
 }
+
+.editorCursorBlend{
+	mix-blend-mode: difference;
+}
+
 
 .editorCursorAnim{
 	animation: 1s cursorBlink step-end infinite;
