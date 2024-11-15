@@ -166,6 +166,7 @@ document.addEventListener('keydown', function(event){
 	//TODO MAKE OWN SCROLLBAR 'CAUSE WHY NOT
 	//TODO SCROLL ON OVERFLOW
 	//TODO ALSO CHECK OUT split() FOR SYNTAX HIGHLIGHTHING
+	//TODO WRITE
 
 	if(cursorBlink.value == true){
 		//For cursor blink animation, make cursor visible when a key is pressed
@@ -342,6 +343,9 @@ document.addEventListener('keydown', function(event){
 				if(charToRemoveBackspace != ""){
 					var i = (cursorX / 9) - 1
 					var j = 0
+					if(specialCharacter.includes(document.querySelectorAll(".textEditorLine")[currentLine].innerText.charAt(i))){
+						i = i - 1
+					}
 					while(!specialCharacter.includes(document.querySelectorAll(".textEditorLine")[currentLine].innerText.charAt(i)) && i * 9 != 0){
 						i--
 						j++
