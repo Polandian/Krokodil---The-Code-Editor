@@ -202,6 +202,7 @@ body{
 
 .textEditorLine{
 	margin-top: 11px;
+	height: 20px;
 }
 
 #editorCursor{
