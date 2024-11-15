@@ -10,6 +10,8 @@ document.addEventListener('keydown', function(event){
 		"NumLock", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter",
 		"Insert", "End", "Clear", "Meta", "ContextMenu", " ", "Shift"]
 
+	//TODO DO HELPFUL KEYS (such as doubling the key (like brackets or ""))
+
 	if(!decrepatedKeys.includes(key)){
 		if(event.ctrlKey && event.shiftKey && event.keyCode == 75) return false
 
@@ -43,4 +45,10 @@ document.addEventListener('keydown', function(event){
 			document.querySelectorAll(".textEditorLine")[currentLine].innerHTML = src
 		}
 	} 
+	cursorX = undefined
+	cursorY = undefined
+	currentLine = undefined
+	lineAmount = undefined
+	key = undefined
+	decrepatedKeys = undefined
 }, false)
