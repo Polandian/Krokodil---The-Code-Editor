@@ -297,11 +297,18 @@ document.addEventListener('keydown', function(event){
 
 	//CtrlShiftK
 	if(event.ctrlKey && event.shiftKey && event.keyCode == 75){
-		removeLine(currentLine, lineAmount)
-		if(cursorY > 1)	(cursorY-= 31,  currentLine--)
-		cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
-		highlightCurrentLineNumber(currentLine)
-		setCaretPos(cursorX, cursorY)
+		if(lineAmount >= 1){
+			removeLine(currentLine, lineAmount)
+			if(cursorY > 1)	(cursorY-= 31,  currentLine--)
+			cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
+			highlightCurrentLineNumber(currentLine)
+			setCaretPos(cursorX, cursorY)			
+		}
+		else{
+			document.querySelectorAll(".textEditorLine")[currentLine].innerText = " "	
+			cursorX = 0
+			setCaretPos(cursorX, cursorY)
+		}
 	}
 
 	//CtrlA
@@ -312,11 +319,10 @@ document.addEventListener('keydown', function(event){
 
 	//CtrlArrowKey
 	var CtrlMoveKeys = [37, 39, 8, 46]
-	var specialCharacter = ["!", "*", ";", ":", ",", ".", "'", '"', " ", "(", ")", "{", "}", "[", "]"]
+	var specialCharacter = ["!", "*", ";", ":", ",", ".", "'", '"', " ", "(", ")", "{", "}", "[", "]"] 
 	//leftArrow, upArrow, downArrow, rightArrow, backspace, del
 
 	if(event.ctrlKey && CtrlMoveKeys.includes(event.keyCode)){
-		console.log(specialCharacter[6], specialCharacter[7], specialCharacter[8])
 		switch(event.keyCode){
 			case 37: //left key
 				var i = (cursorX / 9) - 1
