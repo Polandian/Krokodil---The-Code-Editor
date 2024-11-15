@@ -24,7 +24,6 @@ function loadAnims(){
 	if(highlightLine.value == false){
 		document.querySelectorAll(".lineNumber")[parseInt(window.getComputedStyle(document.getElementById("editorCursor")).marginTop) / 31].style.background = "none"
 		document.querySelectorAll(".textEditorLine")[parseInt(window.getComputedStyle(document.getElementById("editorCursor")).marginTop) / 31].style.background = "none"
-		//todo make close this and make current line number not highlighted	
 	}
 }
 
