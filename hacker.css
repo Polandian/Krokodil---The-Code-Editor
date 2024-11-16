@@ -1,0 +1,15 @@
+#codeEditor{
+	background: rgb(0, 0, 0);
+}
+
+.lineNumber{
+	color: #149414;
+}
+
+.textEditorLine{
+	color: #149414;
+}
+
+#editorCursor{
+	background-color: #149414;
+}
