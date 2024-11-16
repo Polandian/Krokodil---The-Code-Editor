@@ -5,10 +5,10 @@
 //relativeLine(x, y)
 //highlightCurrentLineNumber(x)
 //and most importantly: setCaretPos(x, y) (you can go on without using others, but not this one)
-
+//
 //Don't regret to ask anything about the code that confused you to the creator! github.com/polandian
 //(sorry, it's kinda messy <3)
-
+//
 let lastAction = null
 
 //Moves the block cursor (which is called caret for a reason)
@@ -160,14 +160,6 @@ document.addEventListener('keydown', function(event){
 	var lineAmount = document.getElementById("lineNumber").childElementCount - 1
 	var currentLine = cursorY / 31
 
-	//TODO LAST ACTION
-	//BTW  JAVASCRIPT DOESN'T SEE THE SPANS AS OTHER ELEMENTS, SO ITS GONNA BE PRETTY EZZ!!! IM SO HAPPY OMG
-	//TODO ALSO THIS LOOKS PRETTY COOL FOR LINES WITH ERRORS: document.querySelectorAll(".lineNumber")[x].style.background = "rgb(245, 15, 84)";
-	//TODO MAKE OWN SCROLLBAR 'CAUSE WHY NOT
-	//TODO SCROLL ON OVERFLOW
-	//TODO ALSO CHECK OUT split() FOR SYNTAX HIGHLIGHTHING
-	//TODO WRITE
-
 	if(cursorBlink.value == true){
 		//For cursor blink animation, make cursor visible when a key is pressed
 		clearTimeout(sTO) 
@@ -255,11 +247,15 @@ document.addEventListener('keydown', function(event){
 				break
 			case 8: //Backspace
 				if(charToRemoveBackspace == ""){
-					removeLine(currentLine, lineAmount)
-					if(cursorY > 1)	(cursorY-= 31,  currentLine--)
-					cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
-					highlightCurrentLineNumber(currentLine)
-					setCaretPos(cursorX, cursorY)
+					if(lineAmount >= 1){
+						removeLine(currentLine, lineAmount)
+						if(cursorY > 1)	(cursorY-= 31,  currentLine--)
+						cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
+						highlightCurrentLineNumber(currentLine)
+						setCaretPos(cursorX, cursorY)
+					}else{
+						document.querySelectorAll(".textEditorLine")[currentLine].innerText = ""
+					}
 				}
 				else if(charToRemoveBackspace != ""){
 					var temp = document.querySelectorAll(".textEditorLine")[currentLine].innerText.slice(0, charToRemoveBackspaceIndex) + document.querySelectorAll(".textEditorLine")[currentLine].innerText.slice(charToRemoveBackspaceIndex + 1)
@@ -302,7 +298,8 @@ document.addEventListener('keydown', function(event){
 			if(cursorY > 1)	(cursorY-= 31,  currentLine--)
 			cursorX = document.querySelectorAll(".textEditorLine")[currentLine].innerText.length * 9
 			highlightCurrentLineNumber(currentLine)
-			setCaretPos(cursorX, cursorY)			
+			setCaretPos(cursorX, cursorY)
+			if(relativeLines.value == true) relativeLine(currentLine, lineAmount)		
 		}
 		else{
 			document.querySelectorAll(".textEditorLine")[currentLine].innerText = " "	
@@ -317,13 +314,23 @@ document.addEventListener('keydown', function(event){
 		alert("CTRLA")
 	}
 
+	//CtrlO
+	else if(event.ctrlKey && event.keyCode == 79){
+		document.getElementById("fileSelect").click()
+	}
+
+	//CtrlS
+	else if(event.ctrlKey && event.keyCode == 83){
+		save()
+	}
+
 	//CtrlArrowKey
 	var CtrlMoveKeys = [37, 39, 8, 46]
-	var specialCharacter = ["!", "*", ";", ":", ",", ".", "'", '"', " ", "(", ")", "{", "}", "[", "]"] 
-	//leftArrow, upArrow, downArrow, rightArrow, backspace, del
+	var specialCharacter = ["!", "*", ";", ":", ",", ".", "'", '"', " ", "(", ")", "{", "}", "[", "]", "#"] 
+	//leftArrow, rightArrow, backspace, del                          space
 
 	if(event.ctrlKey && CtrlMoveKeys.includes(event.keyCode)){
-		switch(event.keyCode){
+	    switch(event.keyCode){
 			case 37: //left key
 				var i = (cursorX / 9) - 1
 				while(!specialCharacter.includes(document.querySelectorAll(".textEditorLine")[currentLine].innerText.charAt(i)) && i * 9 != 0){
@@ -401,4 +408,11 @@ $(function(){ //gets the scroll position of codeEditor
     $('#codeEditor').on("mousewheel", function() {
         console.log($("#codeEditor").scrollTop());
     });
+});
+
+$('body').on('keydown', function(e){ //prevents default functions (like tab key jumping around, ctrlS saving the html file)  
+  if (e.keyCode == 9 || e.keyCode == 39 || e.keyCode == 37 || e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 40) e.preventDefault()
+  else if(e.ctrlKey && e.keyCode == 83) e.preventDefault()
+  else if(e.ctrlKey && e.keyCode == 79) e.preventDefault()
+  else if(e.ctrlKey && e.keyCode == 65) e.preventDefault()
 });
