@@ -16,7 +16,7 @@
             <div class="exitCircle"></div>
             <div class="maxCircle"></div>
             <div class="smallCircle"></div>
-            <h1 class="tabTitle">made by Javascript'Er <span style="color: purple;">~</span><span style="color: green;">$</span></h1>
+            <h1 class="tabTitle" id="codeEditorTabName"><span>made by Javascript'Er<span> <span style="color: purple;">~</span><span style="color: green;">$</span></h1>
             <div class="fullScreen" onclick="(document.fullscreenElement) ? document.exitFullscreen() : document.getElementById('codeEditor').requestFullscreen()">+</div>
         </div>
 
@@ -32,6 +32,8 @@
                 <div class="textEditorLine">abc;defg(hijk)"lmnopqr"</div>
                 <div class="textEditorLine">abcdefghijklmnopqrstuwxyz</div>
             </div>
+
+            <br><br><br><br>
         </div>
     </div>
 
@@ -47,9 +49,30 @@
             <h2>Relative Lines: </h2><input name="relativeLines" id="relativeLines" type="checkbox" onclick="changeSetting(this.id)"><br>
             <h2>Cursor Blink: </h2><input name="cursorBlink" id="cursorBlink" type="checkbox" onclick="changeSetting(this.id)"><br>
             <h2>Editor Swing Anim: </h2><input name="editorSwing" id="editorSwing" type="checkbox" onclick="changeSetting(this.id)"><br>
-            <h2>Glass Editor: </h2><input name="editorTransparent" id="editorTransparent" type="checkbox" onclick="changeSetting(this.id)"><br>
             <h2>Text Behind Caret: </h2><input name="behindCaret" id="behindCaret" type="checkbox" onclick="changeSetting(this.id)"><br>
             <h2>Highlight Line: </h2><input name="highlightLine" id="highlightLine" type="checkbox" onclick="changeSetting(this.id)"><br>
+            <h2>Hacker Mode: </h2><input name="hackerMode" id="hackerMode" type="checkbox" onclick="changeSetting(this.id)"><br>
+
+            <br><br><br><br>
+        </div>
+    </div>
+
+    <input type="file" id="fileSelect" style="display: none;">
+
+    <div id="shortcuts">
+        <div class="tabMenu" onclick="(window.getComputedStyle(document.getElementById('shortcutsContainer')).display == 'block') ? document.getElementById('shortcutsContainer').style.display = 'none' : document.getElementById('shortcutsContainer').style.display = 'block'" style="cursor: pointer;">
+            <div class="exitCircle"></div>
+            <div class="maxCircle"></div>
+            <div class="smallCircle"></div>
+            <h1 class="tabTitle" style="left: 200px">Shortcuts <span style="color: purple;">~</span><span style="color: green;">$</span></h1>
+            <div class="fullScreen">-</div>
+        </div>
+        <div id="shortcutsContainer">
+            <p>CTRL+O = Open File</p><br>
+            <p>CTRL+S = Save File</p><br>
+            <p>CTRL+A = Select Line</p><br><br>
+            <p>CTRL+Shift+K = Delete current line</p><br>
+
 
             <br><br><br><br>
         </div>
@@ -61,5 +84,7 @@
     <script src="js/settings.js"></script>
     <script src="js/caret.js"></script>
     <script src="js/write.js"></script>
+    <script src="js/openfile.js"></script>
+    <script src="js/savefile.js"></script>
 </body>
 </html>
