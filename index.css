@@ -23,8 +23,8 @@
 
 body{
 	background-image: url("bg.jpg");
-	background-size: cover;
 	background-repeat: no-repeat;
+	background-size: cover;
 	background-color: black;
 	overflow: hidden;
 }
@@ -37,9 +37,9 @@ body{
 	left: 16px;
 	width: 350px;
 	box-shadow: 0 0 20px black;
-	overflow: hidden;
+	overflow: scroll;
 	border-radius: 10px;
-
+	overflow: auto;
 }
 
 #optionsContainer{
@@ -63,7 +63,43 @@ body{
 }
 
 #optionsContainer::-webkit-scrollbar {
-  	display: none;
+  display: none;
+}
+
+#shortcuts{
+	color: white;
+	font-family: "jetbrains mono bolder";
+	position: absolute;
+	top: 92px;
+	left: 1000px;
+	width: 350px;
+	box-shadow: 0 0 20px black;
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+#shortcutsContainer{
+	padding-top: 15px;
+	overflow-y: scroll;
+	max-height: 335px;
+	display: block;
+	background-color: rgb(20, 20, 20);
+	align-content: center;
+}
+
+#shortcutsContainer *{
+	display: inline;
+	font-weight: 100;
+	margin-left: 20px;
+}
+
+#shortcutsContainer input{
+	cursor: pointer;
+	margin-left: -5px;
+}
+
+#shortcutsContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .tabMenu{
@@ -148,13 +184,15 @@ body{
 }
 
 #codeEditor{
-	width: 600px;
+	/*width: 600px;*/
 	height: 400px;
+	/*min-width: 600px;*/
+	min-height: 400px;
 	margin: auto;
 	margin-top: 20px;
 	background: rgb(20, 20, 20);
-	overflow-y: auto;
-	overflow-x: auto;
+	overflow-y: hidden;
+	overflow-x: hidden;
 	border-radius: 10px;
 	box-shadow: 0 0 20px black;
 	font-weight: 550;
@@ -165,12 +203,16 @@ body{
   -webkit-backdrop-filter: blur(8px);
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;
+  transition: 1s;
 }
 
 #codeEditor::-webkit-scrollbar {
   display: none;
 }
 
+#codeEditorTabName{
+	text-shadow: 0 0 30px black;
+}
 
 .codeEditorAnim{
 	animation: editorAnim 2s infinite ease-in-out;
@@ -188,6 +230,7 @@ body{
 	color: white;
 	font-size: 16px;
 	float: left;
+	transition: color 1s;
 }
 
 #textEditor{ /*part where code is written*/
@@ -203,16 +246,19 @@ body{
 .textEditorLine{
 	margin-top: 11px;
 	height: 20px;
+	transition: 1s;
+	white-space: nowrap;
 }
 
 #editorCursor{
 	width: 8px;
 	height: 14px;
-	background-color: orange;
+	background-color: white;
 	position: absolute;
 	padding-bottom: 5.5px;
 	margin-top: 0px;
 	margin-left: 0px;
+	transition: background-color 1s;
 }
 
 .editorCursorBlend{
@@ -221,4 +267,58 @@ body{
 
 .editorCursorAnim{
 	animation: 1s cursorBlink step-end infinite;
+}
+
+/*Responsive layout*/
+
+@media (max-width: 414px){ /*Phone*/
+	#settings{
+		position: relative;
+		width: 310px;
+		left: 10px;
+		top: 0;
+	}
+	#shortcuts{
+		display: none;
+	}
+	#editorWrapper{
+		max-width: 300px;
+	}
+	.textEditorLine{
+		max-width: 300px;
+	}
+	#codeEditor{
+		width: 300px;
+		min-width: 300px;
+		height: 300px;
+		min-height: 300px;
+		margin: inherit;
+		margin-left: 15px;
+		margin-top: 20px;
+		left: 0;
+	}
+	#title{
+		text-align: initial;
+		margin-left: 10px;
+	}
+	#optionsContainer{
+		height: 225px;
+		max-height: 225px;
+	}
+	.tabTitle{
+		display: none;
+	}
+}
+
+@media (min-width: 600px){ /*Tablets*/
+
+}
+
+@media (min-width: 720px){ /*PC*/
+	#codeEditor{
+		width: 600px;
+		min-width: 600px;
+		margin: auto;
+		margin-top: 20px;
+	}
 }
