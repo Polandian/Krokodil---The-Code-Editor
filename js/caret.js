@@ -9,6 +9,7 @@
 //Don't regret to ask anything about the code that confused you to the creator! github.com/polandian
 //(sorry, it's kinda messy <3)
 //
+
 let lastAction = null
 
 //Moves the block cursor (which is called caret for a reason)
@@ -18,6 +19,13 @@ function setCaretPos(x, y){ //x = cursorX
 	document.getElementById("editorCursor").style.marginTop = y + "px"
 	x = undefined
 	y = undefined
+}
+//Hello World
+
+function lineOptimization(x, y, z){ //For optimization; Hides unseen lines
+	for(var i = 0; i < document.querySelectorAll(".textEditorLine").length; i++){
+		document.querySelectorAll(".textEditorLine")[i].style.display = "none"
+	}
 }
 
 //Highlights current line
@@ -160,12 +168,16 @@ document.addEventListener('keydown', function(event){
 	var lineAmount = document.getElementById("lineNumber").childElementCount - 1
 	var currentLine = cursorY / 31
 
+	const viewPortHeight = parseInt(window.getComputedStyle(document.getElementById("codeEditor")).height) - 50 //50 = tab thing in pixels
+	const lineHeight = 31
+	const maxLineLimit = Math.floor(viewPortHeight / lineHeight) //Max amount of visible lines
+
 	if(cursorBlink.value == true){
 		//For cursor blink animation, make cursor visible when a key is pressed
-		clearTimeout(sTO) 
+		clearTimeout(_c) 
 		document.getElementById("editorCursor").classList.remove("editorCursorAnim")
 		document.getElementById("editorCursor").style.opacity = 1
-		var sTO = setTimeout(() => {
+		var _c = setTimeout(() => {
 			document.getElementById("editorCursor").classList.add("editorCursorAnim")
 		}, 100)
 	}
@@ -230,7 +242,6 @@ document.addEventListener('keydown', function(event){
 				if(currentLine < lineAmount){
 					currentLine+= 1
 					cursorY+= 31 //cursorY
-					highlightCurrentLineNumber(currentLine)
 					if(relativeLines.value == true){
 						relativeLine(currentLine, lineAmount)
 					}
@@ -242,6 +253,7 @@ document.addEventListener('keydown', function(event){
 						console.log("Caught Error: "+error)
 						cursorX = 0 
 					}
+					highlightCurrentLineNumber(currentLine)
 					setCaretPos(cursorX, cursorY)
 				}
 				break
@@ -354,16 +366,16 @@ document.addEventListener('keydown', function(event){
 				break
 			case 8: //backspace
 				if(charToRemoveBackspace != ""){
-					var i = (cursorX / 9) - 1
+					var i = (cursorX / 9) //- 1
 					var j = 0
 					if(specialCharacter.includes(document.querySelectorAll(".textEditorLine")[currentLine].innerText.charAt(i))){
 						i = i - 1
 					}
-					while(!specialCharacter.includes(document.querySelectorAll(".textEditorLine")[currentLine].innerText.charAt(i)) && i * 9 != 0){
+					while(!specialCharacter.includes(document.querySelectorAll(".textEditorLine")[currentLine].innerText.charAt(i)) && i > 0){
 						i--
 						j++
 					}
-					i++
+					if(j == 0) j = 1
 					cursorX = i * 9
 					var temp = document.querySelectorAll(".textEditorLine")[currentLine].innerText.substr(0, i) + document.querySelectorAll(".textEditorLine")[currentLine].innerText.substr(i + j)
 					document.querySelectorAll(".textEditorLine")[currentLine].innerText = temp
@@ -406,13 +418,12 @@ document.addEventListener('keydown', function(event){
 
 $(function(){ //gets the scroll position of codeEditor 
     $('#codeEditor').on("mousewheel", function() {
-        console.log($("#codeEditor").scrollTop());
     });
 });
 
 $('body').on('keydown', function(e){ //prevents default functions (like tab key jumping around, ctrlS saving the html file)  
-  if (e.keyCode == 9 || e.keyCode == 39 || e.keyCode == 37 || e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 40) e.preventDefault()
-  else if(e.ctrlKey && e.keyCode == 83) e.preventDefault()
-  else if(e.ctrlKey && e.keyCode == 79) e.preventDefault()
-  else if(e.ctrlKey && e.keyCode == 65) e.preventDefault()
+  	if (e.keyCode == 9 || e.keyCode == 39 || e.keyCode == 37 || e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 40) e.preventDefault()
+  	else if(e.ctrlKey && e.keyCode == 83) e.preventDefault()
+  	else if(e.ctrlKey && e.keyCode == 79) e.preventDefault()
+  	else if(e.ctrlKey && e.keyCode == 65) e.preventDefault()
 });
