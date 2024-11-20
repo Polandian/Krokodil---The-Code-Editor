@@ -191,8 +191,8 @@ body{
 	margin: auto;
 	margin-top: 20px;
 	background: rgb(20, 20, 20);
-	overflow-y: hidden;
-	overflow-x: hidden;
+	overflow-y: auto;
+	overflow-x: auto;
 	border-radius: 10px;
 	box-shadow: 0 0 20px black;
 	font-weight: 550;
