@@ -1,6 +1,5 @@
 document.getElementById("fileSelect").addEventListener("change", () => {
 	var file = document.getElementById("fileSelect").files[0]
-	console.log(file)
 	var reader = new FileReader()
 
 	reader.readAsText(file)
@@ -35,7 +34,7 @@ document.getElementById("fileSelect").addEventListener("change", () => {
 		_ec = undefined
 	}
 
-	document.getElementById("codeEditorTabName").innerHTML = file.name + "<span style='color: purple;'>  ~</span><span style='color: green;'>$</span>"
+	document.getElementById("codeEditorTabName").innerHTML = "<span>"  + file.name + "</span>" + "<span style='color: purple;'>  ~</span><span style='color: green;'>$</span>"
 	
 	//Free memory
 }, false)
